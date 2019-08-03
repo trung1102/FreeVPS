@@ -4,7 +4,7 @@
 mounted=0
 GREEN='\033[1;32m';GREEN_D='\033[0;32m';RED='\033[0;31m';YELLOW='\033[0;33m';BLUE='\033[0;34m';NC='\033[0m'
 # Virtualization checking..
-virtu=$(egrep -i '^flags.*(vmx|svm)' /proc/cpuinfo | wc -l)
+echo $(egrep '^flags.*(vmx|svm)' /proc/cpuinfo | wc -l)
 if [ $virtu = 0 ] ; then echo -e "[Error] ${RED}Virtualization/KVM in your Server/VPS is OFF\nExiting...${NC}";
 else
 #
@@ -32,10 +32,9 @@ fi
 sudo ln -s /usr/bin/genisoimage /usr/bin/mkisofs
 # Downloading resources
 sudo mkdir /mediabots /floppy /virtio
-link1_status=$(curl -Is https://ia601506.us.archive.org/4/items/WS2012R2/WS2012R2.ISO | grep HTTP | cut -f2 -d" ")
-link2_status=$(curl -Is http://51.15.226.83/WS2012R2.ISO | grep HTTP | cut -f2 -d" ")
-#sudo wget -P /mediabots https://archive.org/download/WS2012R2/WS2012R2.ISO # Windows Server 2012 R2 
-if [ $link1_status = "200" ] ; then 
+link1_status=$(curl -Is http://51.15.226.83/WS2012R2.ISO | grep HTTP | cut -f2 -d" ")
+link2_status=$(curl -Is https://ia601506.us.archive.org/4/items/WS2012R2/WS2012R2.ISO | grep HTTP | cut -f2 -d" ")
+ if [ $link1_status = "200" ] ; then 
 	sudo wget -P /mediabots http://51.15.226.83/WS2012R2.ISO
 elif [ $link2_status = "200" -o $link2_status = "301" ] ; then 
 	sudo wget -P /mediabots https://ia601506.us.archive.org/4/items/WS2012R2/WS2012R2.ISO
